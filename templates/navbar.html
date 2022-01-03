@@ -1,0 +1,59 @@
+<!-- navbar -->
+<nav id="navbar_top" class="navbar p-0 navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand ml-3" href="/">
+        <img src="/static/images/log.svg" width="80" height="60" class="" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse py-3" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item active mx-2">
+                <a class="nav-link " href="/sunglass?sunglass">Sunglass <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link " href="#">Frames</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link " href="#">Contact Lens</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link " href="#">About Us</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link " href="/contact">Contact Us</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link fas fa-shopping-cart mt-1" href="/cart"><span class="text-dark">{{carttotal}}</span> </a>
+            </li>
+        </ul>
+        <div class="navbar-nav my-auto">
+            <li class="nav-item">
+                <div class="container h-100">
+                    <div class="d-flex justify-content-center">
+                        <form class="search_form" action="/search/" method="post">
+                            {% csrf_token %}
+                            <div class="searchbar">
+                                <input class="search_input" type="text" name="search" placeholder="Search...">
+                                <button type="post" class="search_icon"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </div>
+        <div class="navbar-nav mx-5">
+            <li class="nav-item mx-2">
+                <i class="nav-link fas fa-moon my-1"></i>
+            </li>
+            {% if user.is_authenticated %}
+            <a href="/account/logout" class="btn px-3 py-2 btn-sm btn-outline-danger mx-2">Logout</a>
+            {% else%}
+            <a href="/account/signin" class="btn px-3 py-2 btn-sm btn-outline-primary mx-2">Signin</a>
+            <a href="/account/signup" class="btn px-3 py-2 btn-sm btn-outline-primary mx-2">Signup</a>
+            {% endif %}
+
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block head %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="owl-carousel/owl.theme.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block main_content %}
+{% include 'navbar.html' %}
+<!-- Product  -->
+<div class="bbb_viewed">
+    <div class="container-fluid">
+        <div class="row">
+            {% if search %}
+            <div class="col-md-6 mx-auto">
+                <div class="bbb_main_container mb-3">
+                    <div class="bbb_viewed_title_container">
+                        <h3 class="bbb_viewed_title text-center">Related Products</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <!--  -->
+                    {% if product %}
+                    {% for s in product %}
+                    <div class="col-md-3 mb-3 col-sm-6">
+                        <div class="product-grid">
+                            <div class="product-image">
+                                <a href="#" class="image">
+                                    <img class="pic-1" src="{{s.image.url}}">
+                                </a>
+                                <span class="product-discount-label">-{{s.discount_price|div:s.price|mul:100}}%</span>
+                            </div>
+                            <div class="product-content">
+                                <ul class="rating">
+                                    <li class="fas fa-star"></li>
+                                    <li class="fas fa-star"></li>
+                                    <li class="fas fa-star"></li>
+                                    <li class="far fa-star"></li>
+                                    <li class="far fa-star"></li>
+                                </ul>
+                                <h3 class="title"><a href="#">{{s.name}}</a></h3>
+                                <div class="price"><span class="mx-2">${{s.price}}</span>${{s.price|sub:s.discount_price}}</div>
+                                <a class="add-to-cart text-center" href="/detail/{{s.id}}">
+                                    <p class="">VIEW</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% else %}
+                    <div class="col-md-6 mx-auto" style="height: 50vh;">
+                        <div class="bbb_main_container mb-3">
+                            <div class="bbb_viewed_title_container">
+                                <h3 class="bbb_viewed_title text-center">Products not found</h3>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'footer.html'%}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+{% endblock %}

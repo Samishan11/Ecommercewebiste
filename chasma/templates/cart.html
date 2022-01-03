@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block head %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="owl-carousel/owl.theme.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block main_content %}
+{% include 'navbar.html' %}
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-9 pb-5">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-borderless table-shopping-cart">
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col">Product</th>
+                                <th class="text-center" scope="col" width="150">Quantity</th>
+                                <th scope="col" width="120">Price</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="cart-body">
+                            {% for c in cart %}
+                            <tr>
+                                <td>
+                                    <figure class="itemside align-items-center">
+                                        <div class="aside">
+                                            <img src="{{c.product.image.url}}" class="img-sm" width="100" height="80">
+                                        </div>
+                                        <figcaption class="info ml-3"> <a href="#" class="title text-dark"
+                                                data-abc="true"><b>{{c.product.name}}</b></a>
+                                        </figcaption>
+                                    </figure>
+                                </td>
+                                <td class="d-flex ">
+                                    <div class="d-flex">
+                                        {% if c.quantity <= 4 %}
+                                        <button prodid={{c.product.id}}
+                                            class="plus fas fa-plus btn btn-sm  btn-primary"></button>
+                                        <span id="quantity" style="width: 50px;"
+                                            class="text-center border quantity">{{c.quantity}}</span>
+                                        <button prodid={{c.product.id}}
+                                            class=" minus fas fa-minus btn btn-sm btn-primary"></button>
+                                        {% else %}
+                                        <button prodid={{c.product.id}} class="plus fas fa-plus btn btn-sm  btn-primary"
+                                            disabled></button>
+                                        <span id="quantity" style="width: 50px;"
+                                            class="text-center border quantity">{{c.quantity}}</span>
+                                        <button prodid={{c.product.id}}
+                                            class=" minus fas fa-minus btn btn-sm btn-primary"></button>
+                                        {%endif%}
+                                        <!-- <button prodid={{c.product.id}}
+                                            class="plus fas fa-plus btn btn-sm  btn-primary"></button>
+                                            <span id="quantity" style="width: 50px;" class="text-center border quantity">{{c.quantity}}</span>
+                                        <button prodid={{c.product.id}}
+                                            class=" minus fas fa-minus btn btn-sm btn-primary"></button> -->
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="price-wrap"> <var class="price">${{c.product.price}}</var> </div>
+                                </td>
+                                <td class="text-right d-none d-md-block">
+                                    <button prodid={{c.product.id}} class="remove btn btn-danger" data-abc="true">
+                                        Remove</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <!--  -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </aside>
+
+        <aside class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="dlist-align">
+                        <dt>Total price:</dt>
+                        <dd id="amount" class="text-right ml-3">${{totalcost}}</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Shipping:</dt>
+                        <dd class="text-right text-danger ml-3">N/A</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Total:</dt>
+                        <dd id="totalamount" class="text-right text-dark b ml-3"><strong>${{totalcost}}</strong></dd>
+                    </dl>
+                    <hr>
+                    {% if cart %}
+                    <a href="/order/" class="btn btn-out btn-block btn-warning btn-square btn-main d-block"
+                        class="btn btn-primary">Checkout</a>
+                    {%endif%}
+                    <a href="/" class="btn fas fa-arrow-left btn-block btn-out btn-success btn-square btn-main"
+                        data-abc="true"> Continue Shopping</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+{% include 'footer.html'%}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+    crossorigin="anonymous"></script>
+<!-- script file -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--  -->
+<script>
+    // $(function () {
+    //     $('[data-toggle="tooltip"]').tooltip()
+    // })
+    // update cart 
+    $('.plus').click(function (e) {
+        e.preventDefault();
+        var prod_id = $(this).attr('prodid').toString();
+        var quantity = this.parentNode.children[1]
+        var amount = document.getElementById('amount');
+        var toatlamount = document.getElementById('totalamount');
+        $.ajax({
+            type: 'GET',
+            url: '/plus-cart/',
+            data: {
+                product_id: prod_id,
+            },
+            success: function (data) {
+                quantity.innerText = data.quantity
+                toatlamount.style.fontWeight = '700'
+                amount.innerText = "$" + data.totalcost + '.0'
+                toatlamount.innerText = "$" + data.totalcost + '.0'
+            }
+
+        })
+    })
+    // decrase the cart item ajax jquery
+    $('.minus').click(function (e) {
+        e.preventDefault();
+        var prod_id = $(this).attr('prodid').toString();
+        var quantity = this.parentNode.children[1];
+        var amount = document.getElementById('amount');
+        var toatlamount = document.getElementById('totalamount');
+        $.ajax({
+            type: 'GET',
+            url: '/minus-cart/',
+            data: {
+                product_id: prod_id
+            },
+            success: function (data) {
+                quantity.innerText = data.quantity
+                toatlamount.style.fontWeight = '700'
+                amount.innerText = "$" + data.totalcost + '.0'
+                toatlamount.innerText = "$" + data.totalcost + '.0'
+            }
+
+        })
+    })
+    // remove cart 
+    $('.remove').click(function (e) {
+        e.preventDefault();
+        var prod_id = $(this).attr('prodid').toString();
+        var amount = document.getElementById('amount');
+        var toatlamount = document.getElementById('totalamount');
+        $.ajax({
+            type: 'GET',
+            url: '/delete-cart/',
+            data: {
+                product_id: prod_id
+            },
+            success: function (data) {
+                $('.cart-body').remove(data.success);
+            },
+            error: function () {
+                alert('worng....!')
+            }
+        })
+    })
+
+
+
+</script>
+{% endblock %}

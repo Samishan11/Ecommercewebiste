@@ -1,0 +1,29 @@
+{% for c in cart %}
+<tr>
+    <td>
+        <figure class="itemside align-items-center">
+            <div class="aside">
+                <img src="{{c.product.image.url}}" class="img-sm" width="100" height="80">
+            </div>
+            <figcaption class="info ml-3"> <a href="#" class="title text-dark"
+                    data-abc="true"><b>{{c.product.name}}</b></a>
+            </figcaption>
+        </figure>
+    </td>
+    <td class="d-flex jusity-content-center align-center">
+        <div class="d-flex">
+            <button prodid={{c.product.id}} class="plus fas fa-plus btn btn-sm  btn-primary"></button>
+            <input id="quantity" type="text" readonly class="form-control form-control-sm  text-center"
+                value="{{c.quantity}}">
+            <button prodid={{c.product.id}} class=" minus fas fa-minus btn btn-sm btn-primary"></button>
+        </div>
+    </td>
+    <td>
+        <div class="price-wrap"> <var class="price">${{c.product.price}}</var> </div>
+    </td>
+    <td class="text-right d-none d-md-block">
+        <button prodid={{c.product.id}} class="remove btn btn-danger" data-abc="true">
+            Remove</button>
+    </td>
+</tr>
+{% endfor %}

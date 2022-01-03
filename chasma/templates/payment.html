@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block head %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="owl-carousel/owl.theme.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block main_content %}
+{% include 'navbar.html' %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5 p-4 my-2">
+            <div class="payment-info border border-secondary pb -3">
+                <h4 class="text-center"><b>Checkout Form</b></h4>
+                <form id="payment-form" action="" class="p-5">
+                    {% csrf_token %}
+                    <div>
+                        <label class="credit-card-label">Name</label>
+                        <input type="text" name="name" class="form-control credit-inputs" value="{{request.user}}" placeholder="Name">
+                    </div>
+                    <div>
+                        <label class="credit-card-label">Address</label>
+                        <input type="text" name="address" class="form-control credit-inputs" placeholder="">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="credit-card-label">Phone</label>
+                            <input type="text" name="phone" class="form-control credit-inputs" placeholder="">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="credit-card-label">Email</label>
+                            <input type="text" name="email" class="form-control credit-inputs" value="{{request.user.email}}" placeholder="">
+                        </div>
+                    </div>
+                    <hr class="line">
+                    <div class="d-flex justify-content-between information"><span>Subtotal</span><span>${{totalcost}}</span></div>
+                    <div class="d-flex justify-content-between information"><span>Shipping</span><span>N/A</span></div>
+                    <div class="d-flex justify-content-between information">
+                        <span>Total(Incl. taxes)</span><span>${{totalcost}}</span>
+                    </div>
+                    <button class="btn btn-primary text-center btn-xl px-5  d-flex justify-content-between mt-3" type="submit">Checkout</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-7 p-4 my-2 border ">
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b>Order Summery</b></h4>
+                    </div>
+                    <div class="col align-self-center text-right text-muted">{{carttotal}} items</div>
+                </div>
+            </div>
+            {% for c in cart %}
+            <div class="row border-top border-bottom px-3">
+                <div class="row main align-items-center">
+                    <div class="col-2"><img id="img" class="img-fluid" src="{{c.product.image.url}}"></div>
+                    <div class="col">
+                        <div class="row text-muted">{{c.product.catagory}}</div>
+                        <div class="row">{{c.product.name}}</div>
+                    </div>
+                    <div class="col">
+                        <span>x{{c.quantity}}</span>
+                    </div>
+                    <div class="col">${{c.product.price}} <span class="close">&#10005;</span></div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="back-to-shop"><a href="#">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html'%}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+    crossorigin="anonymous"></script>
+<!-- script file -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(document).submit('#payment-form',function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'post',
+            url:'/payment/',
+            data:$('#payment-form').serialize(),
+            success:function(data){
+                alert('Sucessfully Orderd')
+                $('#payment-form')[0].reset()
+            },
+            error:function(data){
+                console.log(data);
+                // alert('something went wrong...!')
+            }
+
+        })
+    })
+</script>
+
+{% endblock %}
