@@ -234,4 +234,4 @@ def sunglass(request):
 def frame(request):
     return render(request, 'sunglass.html')
 def lens(request):
-    return render(request, 'sunglass.htmsl')
+    return render(request, 'sunglass.html')
